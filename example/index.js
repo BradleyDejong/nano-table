@@ -1,6 +1,5 @@
 import Table from '../src'
 import choo from 'choo'
-import log from 'choo-log'
 
 const html = require('choo/html')
 
@@ -8,9 +7,13 @@ const table = new Table()
 
 const app = choo()
 
-app.use(log)
 app.use(store)
 app.route('/', sampleView)
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use(require('choo-devtools')())
+}
+
 app.mount('body')
 
 function store (state, emitter) {

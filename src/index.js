@@ -1,7 +1,7 @@
 const R = require('ramda')
-const { chain, compose, curry, filter, map, head, prop, sortBy } = R
+const { chain, compose, curry, filter, map, head, prop, sortBy, set, lensProp, __ } = R
 const { fromNullable } = require('folktale/maybe')
-const { defaultTo, safeProp } = require('./util')
+const { defaultTo, safeProp, pureLog, noop } = require('./util')
 const html = require('bel')
 const Nanocomponent = require('nanocomponent')
 
@@ -10,14 +10,36 @@ export default function Table () {
   Nanocomponent.call(this)
 }
 
-const toTd = i => html`<td>${i}</td>`
+const toTd = 
+      (config) => {
+        return html`<td onclick=${config.onClick || noop}>${config.text}</td>`
+      }
 
-const getColumnConfig = compose(defaultTo([]), chain(safeProp('columns')), fromNullable)
+const setText = set(lensProp('text'))
+const setOnClick = set(lensProp('onClick'))
 
-const headers = compose(
-  map(compose(toTd, prop('displayName')))
+const headerClicked = () => alert('Clicked!')
+
+const toHeaderTd = curry((sortSetter, col) => {
+  return compose(
+    toTd
+    , pureLog
+    , setOnClick(headerClicked)
+    , setText(__, {})
+    , prop('displayName')
+  )(col)
+})
+
+const getColumnConfig = compose(
+  defaultTo([]),
+  chain(safeProp('columns')),
+  fromNullable)
+
+const headers = curry((sortSetter, config) => compose(
+  map(toHeaderTd(sortSetter))
   , getColumnConfig
-)
+)(config))
+
 const getterFromDisplayName = compose(
   x => i => i[x]
   , prop('displayName')
@@ -42,6 +64,7 @@ const liFromItem = curry((config, item) => {
   const dataCols = map(
     compose(
       toTd
+      , set(lensProp('text'), __, {})
       , x => x(item)
       , accessorFor
     )
@@ -65,15 +88,21 @@ const toListItems = curry((config, sortAttr, items) => {
   )(items)
 })
 
-const renderFn = (items, config, sortAttr) => html`
-<table>
-  <thead>
-    <tr>${headers(config)}</tr>
-  </thead>
-  ${toListItems(config, sortAttr, items)}
-</table>
-`
-const updateFn = () => false
+const renderFn = function(items, config, sortAttr) {
+  const setSort = noop
+  return html`
+    <table>
+      <thead>
+        <tr>${headers(setSort.bind(this), config)}</tr>
+      </thead>
+      ${toListItems(config, sortAttr, items)}
+    </table>
+  `
+}
+
+const updateFn = function() {
+  return false
+}
 
 Table.prototype = Object.create(Nanocomponent.prototype)
 Table.prototype.createElement = renderFn

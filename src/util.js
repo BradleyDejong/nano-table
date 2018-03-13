@@ -6,6 +6,8 @@ export const safeProp = curry(compose(fromNullable, prop))
 export const defaultTo = curry((def, m) => m.getOrElse(def))
 export const defaultNullableTo = def => compose(defaultTo(def), fromNullable)
 
+export const noop = () => {}
+
 export function pureLog (x) {
   console.log(x)
   return x
