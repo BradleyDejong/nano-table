@@ -9,11 +9,6 @@ const app = choo()
 
 app.use(store)
 app.route('/', sampleView)
-
-if (process.env.NODE_ENV !== 'production') {
-  app.use(require('choo-devtools')())
-}
-
 app.mount('body')
 
 function store (state, emitter) {

@@ -1,0 +1,6 @@
+:host {
+    font-weight: bold;
+}
+:host:hover {
+    cursor: pointer;
+}

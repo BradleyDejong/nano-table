@@ -2,12 +2,12 @@
   "name": "nano-table",
   "version": "0.1.0-beta.1",
   "description": "A nano component for sortable tables",
-  "main": "lib/index.js",
+  "main": "lib/bundle.js",
   "scripts": {
-    "build": "babel src -d lib --presets=env",
-    "start": "bankai start example/index.js",
+    "build": "browserify src/index.js -o lib/bundle.js -t babelify -t sheetify",
+    "start": "budo example/index.js --live -- -t babelify -t sheetify",
     "lint": "standard",
-    "prepublish": "npm run lint && npm run build",
+    "prepare": "npm run lint && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
@@ -32,11 +32,13 @@
     "ramda": "^0.25.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "bankai": "^9.9.0",
+    "babelify": "^8.0.0",
+    "browserify": "^16.1.1",
+    "budo": "^11.2.0",
     "choo": "^6.10.1",
-    "choo-devtools": "^2.5.0",
+    "sheetify": "^7.3.0",
     "standard": "^11.0.0"
   }
 }

@@ -1,11 +1,12 @@
 const R = require('ramda')
+const css = require('sheetify')
 const { chain, compose, curry, filter, identity, map, head, prop, reverse, sortBy, set, lensProp, __ } = R
 const { fromNullable } = require('folktale/maybe')
 const { defaultTo, safeProp, noop } = require('./util')
 const html = require('bel')
 const Nanocomponent = require('nanocomponent')
 
-const toTd = (config) => html`<td onclick=${config.onClick || noop}>${config.text}</td>`
+const toTd = (config) => html`<td class=${config.cssClass || ''} onclick=${config.onClick || noop}>${config.text}</td>`
 
 // setText :: String -> Object -> Object
 const setText = set(lensProp('text'))
@@ -13,12 +14,15 @@ const setText = set(lensProp('text'))
 // setText :: Function -> Object -> Object
 const setOnClick = set(lensProp('onClick'))
 
+const headerTdStyles = css('./header-td.css')
+
 // toHeaderTd :: SortHandler -> ColumnConfig -> DOMElement
 const toHeaderTd = curry((sortSetter, col) => {
   const colName = prop('displayName', col)
 
   const buildTd = compose(
     toTd
+    , set(lensProp('cssClass'), headerTdStyles)
     , setOnClick(() => sortSetter(colName))
     , setText(__, {})
   )
