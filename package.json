@@ -1,14 +1,18 @@
 {
   "name": "nano-table",
-  "version": "0.1.0",
+  "version": "0.1.0-beta.0",
   "description": "A nano component for sortable tables",
   "main": "lib/index.js",
   "scripts": {
-    "build": "bankai build src/index.js",
+    "build": "babel src -d lib --presets=env",
     "start": "bankai start example/index.js",
     "lint": "standard",
+    "prepublish": "npm run lint && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "lib/"
+  ],
   "keywords": [
     "nanocomponent",
     "table",
@@ -24,6 +28,8 @@
     "ramda": "^0.25.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "bankai": "^9.9.0",
     "choo": "^6.10.1",
     "choo-devtools": "^2.5.0",
