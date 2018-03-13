@@ -21,20 +21,21 @@ function store (state, emitter) {
 
 const config = {
   columns: [
-    {displayName: 'Value 1'},
-    {displayName: 'Value 2'}
+    {displayName: 'Name'},
+    {displayName: 'Language', accessor: x => x['Invented']}
   ]
 }
 const items = [
-  { 'Value 1': 4, 'Value 2': 'a' },
-  { 'Value 1': 2, 'Value 2': 'z' },
-  { 'Value 1': 3, 'Value 2': 'c' }
+  { 'Name': 'Brendan Eich', 'Invented': 'JavaScript' },
+  { 'Name': 'Philip Wadler', 'Invented': 'Haskell' },
+  { 'Name': 'John McCarthy', 'Invented': 'LISP' },
+  { 'Name': 'Don Syme', 'Invented': 'F#' }
 ]
 
 function sampleView (state, emit) {
   return html`
     <body>
-      ${table.render(items, config, 'Value 1', false)}
+      ${table.render(items, config, 'Name', false)}
     </body>
   `
 }
