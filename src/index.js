@@ -1,7 +1,7 @@
 const R = require('ramda')
-const { chain, compose, curry, filter, map, head, prop, sortBy, set, lensProp, __ } = R
+const { chain, compose, curry, filter, identity, map, head, prop, reverse, sortBy, set, lensProp, __ } = R
 const { fromNullable } = require('folktale/maybe')
-const { defaultTo, safeProp, pureLog, noop } = require('./util')
+const { defaultTo, safeProp, noop } = require('./util')
 const html = require('bel')
 const Nanocomponent = require('nanocomponent')
 
@@ -10,7 +10,7 @@ export default function Table () {
   Nanocomponent.call(this)
 }
 
-const toTd = 
+const toTd =
       (config) => {
         return html`<td onclick=${config.onClick || noop}>${config.text}</td>`
       }
@@ -18,16 +18,13 @@ const toTd =
 const setText = set(lensProp('text'))
 const setOnClick = set(lensProp('onClick'))
 
-const headerClicked = () => alert('Clicked!')
-
 const toHeaderTd = curry((sortSetter, col) => {
+  const colName = prop('displayName', col)
   return compose(
     toTd
-    , pureLog
-    , setOnClick(headerClicked)
+    , setOnClick(() => sortSetter(colName))
     , setText(__, {})
-    , prop('displayName')
-  )(col)
+  )(colName)
 })
 
 const getColumnConfig = compose(
@@ -81,27 +78,34 @@ const columnByName = curry((name, config) => {
   )(config)
 })
 
-const toListItems = curry((config, sortAttr, items) => {
+const toListItems = curry((config, sortAttr, items, reverser) => {
   return compose(
     map(liFromItem(config))
+    , reverser
     , sortBy(accessorForByName(sortAttr, config))
   )(items)
 })
 
-const renderFn = function(items, config, sortAttr) {
-  const setSort = noop
+const renderFn = function (items, config, sortAttr, shouldReverse) {
+  this.sortAttr = sortAttr
+  this.shouldReverse = shouldReverse
+
+  const setSort = function (sort) {
+    this.render(items, config, sort, this.sortAttr === sort ? !this.shouldReverse : this.shouldReverse)
+  }
+
   return html`
     <table>
       <thead>
         <tr>${headers(setSort.bind(this), config)}</tr>
       </thead>
-      ${toListItems(config, sortAttr, items)}
+      ${toListItems(config, sortAttr, items, this.shouldReverse ? reverse : identity)}
     </table>
   `
 }
 
-const updateFn = function() {
-  return false
+const updateFn = function (items, config, sortAttr, shouldReverse) {
+  return sortAttr !== this.sortAttr || shouldReverse !== this.shouldReverse
 }
 
 Table.prototype = Object.create(Nanocomponent.prototype)

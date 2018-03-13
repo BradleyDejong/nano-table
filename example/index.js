@@ -34,7 +34,7 @@ const items = [
 function sampleView (state, emit) {
   return html`
     <body>
-      ${table.render(items, config, 'Value 1')}
+      ${table.render(items, config, 'Value 1', false)}
     </body>
   `
 }

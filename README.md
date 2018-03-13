@@ -12,9 +12,9 @@ A [nanocomponent](https://github.com/choojs/nanocomponent) for tables. Mainly fo
     - ✓ Default value fn for items where accessor returns null
     - Override sortBy on a column-by-column level
   - tr ID configuration
-  - Callbacks on click
+  - Callbacks on row click
   - ✓ Initial sort
-  - (current sort)?
+  - (current sort callback)?
   - Allow for `table` or `ol`?
 
 - User feedback
@@ -22,10 +22,11 @@ A [nanocomponent](https://github.com/choojs/nanocomponent) for tables. Mainly fo
   - built-in styles(?)
 
 - User interaction
-  - Clicking header sorts by that item
+  - ✓ Clicking header sorts by that item
+  - ✓ Clicking header of already-selected sort reverses the sort
 
 - Internals
-  - Sort by asc/desc
+  - ✓ Sort by asc/desc
 
 - Integrations
   - Write documentation for nanocomponent adapters for use in Angular
