@@ -6,7 +6,7 @@ const { defaultTo, safeProp, noop } = require('./util')
 const html = require('bel')
 const Nanocomponent = require('nanocomponent')
 
-const toTd = (config) => html`<td class=${config.cssClass || ''} onclick=${config.onClick || noop}>${config.text}</td>`
+const toTd = (config) => html`<td class="${config.cssClass || ''}" onclick=${config.onClick || noop}>${config.text}</td>`
 
 // setText :: String -> Object -> Object
 const setText = set(lensProp('text'))
@@ -14,15 +14,23 @@ const setText = set(lensProp('text'))
 // setText :: Function -> Object -> Object
 const setOnClick = set(lensProp('onClick'))
 
-const headerTdStyles = css('./header-td.css')
+const baseHeaderTdStyles = css('./header-td.css')
+
+const headerStyle = curry(
+  (col, currentSort, isReversed) => {
+    const base = baseHeaderTdStyles
+    const direction = isReversed ? 'ascending' : 'descending'
+    return prop('displayName', col) === currentSort ? `${direction} ${base}` : base
+  }
+)
 
 // toHeaderTd :: SortHandler -> ColumnConfig -> DOMElement
-const toHeaderTd = curry((sortSetter, col) => {
+const toHeaderTd = curry((sortSetter, currentSort, isReversed, col) => {
   const colName = prop('displayName', col)
 
   const buildTd = compose(
     toTd
-    , set(lensProp('cssClass'), headerTdStyles)
+    , set(lensProp('cssClass'), headerStyle(col, currentSort, isReversed))
     , setOnClick(() => sortSetter(colName))
     , setText(__, {})
   )
@@ -36,9 +44,9 @@ const getColumnConfig = compose(
   chain(safeProp('columns')),
   fromNullable)
 
-// headers :: SortHandler -> TableConfig -> Array DOMElement
-const headers = curry((sortSetter, config) => compose(
-  map(toHeaderTd(sortSetter))
+// headers :: SortHandler -> String -> TableConfig -> Array DOMElement
+const headers = curry((sortSetter, currentSort, isReversed, config) => compose(
+  map(toHeaderTd(sortSetter, currentSort, isReversed))
   , getColumnConfig
 )(config))
 
@@ -120,7 +128,7 @@ const renderFn = function (items, config, sortAttr, shouldReverse) {
   return html`
     <table>
       <thead>
-        <tr>${headers(setSort.bind(this), config)}</tr>
+        <tr>${headers(setSort.bind(this), this.sortAttr, this.shouldReverse, config)}</tr>
       </thead>
       ${toListItems(config, sortAttr, items, this.shouldReverse ? reverse : identity)}
     </table>

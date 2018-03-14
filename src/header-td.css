@@ -4,3 +4,11 @@
 :host:hover {
     cursor: pointer;
 }
+
+:host.ascending::after {
+    content: "\2191";
+}
+
+:host.descending::after {
+    content: "\2193";
+}
