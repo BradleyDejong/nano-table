@@ -88,12 +88,22 @@ const columnByName = curry((name, config) => {
   )(config)
 })
 
+const sortByForCol = curry(
+  (config, sortAttr) =>
+    compose(
+      sortBy
+      , defaultTo(accessorForByName(sortAttr, config))
+      , safeProp('sortValue')
+      , columnByName(sortAttr)
+    )(config)
+)
+
 // toListItems :: TableConfig -> String -> Array Object -> (Array a -> Array a) -> Array DOMElement
 const toListItems = curry((config, sortAttr, items, reverser) => {
   return compose(
     map(liFromItem(config))
     , reverser
-    , sortBy(accessorForByName(sortAttr, config))
+    , sortByForCol(config, sortAttr)
   )(items)
 })
 

@@ -17,14 +17,15 @@ function store (state, emitter) {
 const config = {
   columns: [
     {displayName: 'Name'},
-    {displayName: 'Language', accessor: x => x['Invented']}
+    {displayName: 'Language', accessor: x => x['Invented']},
+    {displayName: 'silly', sortValue: x => x.silly[1] }
   ]
 }
 const items = [
-  { 'Name': 'Brendan Eich', 'Invented': 'JavaScript' },
-  { 'Name': 'Philip Wadler', 'Invented': 'Haskell' },
-  { 'Name': 'John McCarthy', 'Invented': 'LISP' },
-  { 'Name': 'Don Syme', 'Invented': 'F#' }
+  { 'Name': 'Brendan Eich', 'Invented': 'JavaScript', silly: '1z' },
+  { 'Name': 'Philip Wadler', 'Invented': 'Haskell', silly: '2x' },
+  { 'Name': 'John McCarthy', 'Invented': 'LISP', silly: '3w' },
+  { 'Name': 'Don Syme', 'Invented': 'F#', silly: '4y' }
 ]
 
 function sampleView (state, emit) {

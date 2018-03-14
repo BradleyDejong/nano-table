@@ -10,8 +10,8 @@ A [nanocomponent](https://github.com/choojs/nanocomponent) for tables. Mainly fo
     - ✓ allow override
     - ✓ sort fn
     - ✓ Default value fn for items where accessor returns null
-    - Override sortBy on a column-by-column level
-  - tr ID configuration
+    - ✓ Override sortBy on a column-by-column level
+  - `tr` ID configuration
   - Callbacks on row click
   - ✓ Initial sort
   - (current sort callback)?
