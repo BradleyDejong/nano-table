@@ -1,13 +1,13 @@
 {
   "name": "nano-table",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "description": "A nano component for sortable tables",
   "main": "lib/bundle.js",
   "scripts": {
     "build": "browserify src/index.js -o lib/bundle.js -t babelify -t sheetify",
     "start": "budo example/index.js --live -- -t babelify -t sheetify",
     "lint": "standard",
-    "prepare": "npm run lint && npm run build",
+    "prepushOnly": "npm run lint && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
