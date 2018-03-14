@@ -19,7 +19,7 @@ const baseHeaderTdStyles = css('./header-td.css')
 const headerStyle = curry(
   (col, currentSort, isReversed) => {
     const base = baseHeaderTdStyles
-    const direction = isReversed ? 'ascending' : 'descending'
+    const direction = isReversed ? 'descending' : 'ascending'
     return prop('displayName', col) === currentSort ? `${direction} ${base}` : base
   }
 )
@@ -56,6 +56,12 @@ const getterFromDisplayName = compose(
   , prop('displayName')
 )
 
+// viewFor :: ColumnConfig -> (Object -> InnerHTML)
+const viewFor = col => compose(
+  defaultTo(stringView(getterFromDisplayName(col)))
+  , safeProp('view')
+)(col)
+
 // accessorFor :: ColumnConfig -> (Object -> ColumnData)
 const accessorFor = col => compose(
   defaultTo(getterFromDisplayName(col))
@@ -71,16 +77,21 @@ const accessorForByName = curry(
     )(config)
 )
 
+export const stringView = accessor => curry(
+  (item) => compose(
+    toTd
+    , set(lensProp('text'), __, {})
+  )(accessor(item))
+)
+
 // liFromItem :: TableConfig -> Object -> DOMElement
 const liFromItem = curry((config, item) => {
   const columns = getColumnConfig(config)
 
   const dataCols = map(
     compose(
-      toTd
-      , set(lensProp('text'), __, {})
-      , x => x(item)
-      , accessorFor
+      x => x(item)
+      , viewFor
     )
   )
 
@@ -147,3 +158,8 @@ export default function Table () {
 Table.prototype = Object.create(Nanocomponent.prototype)
 Table.prototype.createElement = renderFn
 Table.prototype.update = updateFn
+
+function log(x) {
+  console.log(x)
+  return x
+}

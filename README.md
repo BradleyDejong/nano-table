@@ -17,6 +17,7 @@ A [nanocomponent](https://github.com/choojs/nanocomponent) for tables. Mainly fo
   - (current sort callback)?
   - Allow for `table` or `ol`?
   - Zero-config "just works" implementation. Default columns/sorting based on inspecting common properties in the objects
+  - ✓ ~~Allow custom column renderers~~
 
 - User feedback
   - icon for which column is currently sorting
