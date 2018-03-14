@@ -5,15 +5,15 @@ A [nanocomponent](https://github.com/choojs/nanocomponent) for tables. Mainly fo
 ## TODOS
 - API design
   - Column configurations
-    - ✓ display name
-    - ✓ toString as default
-    - ✓ allow override
-    - ✓ sort fn
-    - ✓ Default value fn for items where accessor returns null
-    - ✓ Override sortBy on a column-by-column level
+    - ✓ ~~display name~~
+    - ✓ ~~toString as default~~
+    - ✓ ~~allow override~~
+    - ✓ ~~sort fn~~
+    - ✓ ~~Default value fn for items where accessor returns null~~
+    - ✓ ~~Override sortBy on a column-by-column level~~
   - `tr` ID configuration
   - Callbacks on row click
-  - ✓ Initial sort
+  - ✓ ~~Initial sort~~
   - (current sort callback)?
   - Allow for `table` or `ol`?
   - Zero-config "just works" implementation. Default columns/sorting based on inspecting common properties in the objects
@@ -23,11 +23,11 @@ A [nanocomponent](https://github.com/choojs/nanocomponent) for tables. Mainly fo
   - built-in styles(?)
 
 - User interaction
-  - ✓ Clicking header sorts by that item
-  - ✓ Clicking header of already-selected sort reverses the sort
+  - ✓ ~~Clicking header sorts by that item~~
+  - ✓ ~~Clicking header of already-selected sort reverses the sort~~
 
 - Internals
-  - ✓ Sort by asc/desc
+  - ✓ ~~Sort by asc/desc~~
 
 - Integrations
   - Write documentation for nanocomponent adapters for use in Angular
