@@ -1,6 +1,6 @@
 {
   "name": "nano-table",
-  "version": "0.1.0-beta.3",
+  "version": "0.1.0-beta.4",
   "description": "A nano component for sortable tables",
   "main": "lib/bundle.js",
   "scripts": {
