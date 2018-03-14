@@ -55,7 +55,7 @@ const items = [
 function sampleView (state, emit) {
   return html`
     <body>
-      ${table.render(items, config, 'Name', false)}
+      ${table.render({items, config, sortAttr: 'Name', shouldReverse: false})}
 
 ${selected.map(x => x.Name).join(', ')}
     </body>
