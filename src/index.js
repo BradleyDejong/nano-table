@@ -128,12 +128,13 @@ const toListItems = curry((config, sortAttr, items, reverser) => {
 
 // IMPURE STUFF -------------------------- (icky class-like nonsense)
 
-const renderFn = function (items, config, sortAttr, shouldReverse) {
+const renderFn = function ({items, config, sortAttr, shouldReverse}) {
   this.sortAttr = sortAttr
-  this.shouldReverse = shouldReverse
+  this.shouldReverse = shouldReverse || false;
+
 
   const setSort = function (sort) {
-    this.render(items, config, sort, this.sortAttr === sort ? !this.shouldReverse : this.shouldReverse)
+    this.render({ items, config, sortAttr: sort, shouldReverse: this.sortAttr === sort ? !this.shouldReverse : this.shouldReverse})
   }
 
   return html`

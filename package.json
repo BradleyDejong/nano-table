@@ -4,7 +4,7 @@
   "description": "A nano component for sortable tables",
   "main": "lib/bundle.js",
   "scripts": {
-    "build": "browserify src/index.js -o lib/bundle.js -t babelify -t sheetify",
+    "build": "browserify src/index.js --standalone nano-table -o lib/bundle.js -t babelify -t sheetify",
     "start": "budo example/index.js --live -- -t babelify -t sheetify",
     "lint": "standard",
     "prepushOnly": "npm run lint && npm run build",
@@ -29,7 +29,8 @@
     "bel": "^5.1.7",
     "folktale": "^2.1.0",
     "nanocomponent": "^6.5.1",
-    "ramda": "^0.25.0"
+    "ramda": "^0.25.0",
+    "watchify": "^3.11.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
