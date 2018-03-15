@@ -52,12 +52,18 @@ const items = [
   { 'Name': 'Don Syme', 'Invented': 'F#', Date: new Date('2005') }
 ]
 
+
+const tableRender = () => {
+  const args = table._arguments[0] || {items, config, sortAttr: 'Name', shouldReverse: false}
+  return table.render.call(table, args)
+}
+
 function sampleView (state, emit) {
   return html`
     <body>
-      ${table.render({items, config, sortAttr: 'Name', shouldReverse: false})}
+      ${tableRender()}
 
-${selected.map(x => x.Name).join(', ')}
+      ${selected.map(x => x.Name).join(', ')}
     </body>
   `
 }
